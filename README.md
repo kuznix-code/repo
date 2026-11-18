@@ -34,10 +34,12 @@ curl -fsSL https://raw.githubusercontent.com/kuznix-code/repo/main/install.sh | 
 
 The installer selects:
 - CachyOS: `kuznix-cachy`
-- Other Arch-based systems configured for `x86-64-v3`, `x86-64-v4`, or `znver4`: the matching `kuznix-cachy-v3`, `kuznix-cachy-v4`, or `kuznix-cachy-znver4`
+- CachyOS configured with `-march=x86-64-v3`: `kuznix-cachy-v3`
+- CachyOS configured with `-march=x86-64-v4`: `kuznix-cachy-v4`
+- CachyOS configured with `-march=znver4`: `kuznix-cachy-znver4`
 - Other Arch-based systems: `kuznix-arch`
 
-It detects explicit `-march` settings in makepkg configuration first, then checks CPU capabilities/model. It only enables the repository and refreshes package databases; it does not install LH4051-DE. Review the script before running it if you prefer to inspect installation scripts first.
+The installer reads CachyOS's configured `-march` target from `/etc/makepkg.conf` and `/etc/makepkg.conf.d/*.conf`. It writes an explicit server URL in the form `https://kuznix-code.github.io/repo/REPOSITORY/x86_64`, then refreshes package databases. It does not install LH4051-DE. Review the script before running it if you prefer to inspect installation scripts first.
 
 ## Enable a repository
 
@@ -46,7 +48,7 @@ Add the selected block to `/etc/pacman.conf` (replace the repository name to sel
 ```ini
 [kuznix-arch]
 SigLevel = Optional
-Server = https://kuznix-code.github.io/repo/$repo/$arch
+Server = https://kuznix-code.github.io/repo/kuznix-arch/x86_64
 ```
 
 For development builds, use the matching `-dev` name and URL, for example:
@@ -54,7 +56,7 @@ For development builds, use the matching `-dev` name and URL, for example:
 ```ini
 [kuznix-arch-dev]
 SigLevel = Optional
-Server = https://kuznix-code.github.io/repo/$repo/$arch
+Server = https://kuznix-code.github.io/repo/kuznix-arch-dev/x86_64
 ```
 
 Then refresh package databases and install LH4051-DE:
