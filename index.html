@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kuznix Arch Repositories</title>
+  <style>
+    body { max-width: 900px; margin: 3rem auto; padding: 0 1.25rem; font: 16px/1.6 system-ui, sans-serif; color: #20242a; }
+    h1 { line-height: 1.2; }
+    code, pre { background: #f1f3f5; border-radius: 5px; }
+    code { padding: .12rem .3rem; }
+    pre { padding: 1rem; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; padding: .55rem; border-bottom: 1px solid #ddd; }
+    a { color: #0759b5; }
+  </style>
+</head>
+<body>
+  <h1>Kuznix Arch package repositories</h1>
+  <p>Pacman repositories for <a href="https://github.com/kuznix-code/LH4051-DE">LH4051-DE</a>.</p>
+  <h2>Stable</h2>
+  <ul>
+    <li><code>kuznix-arch</code></li>
+    <li><code>kuznix-cachy</code></li>
+    <li><code>kuznix-cachy-v3</code></li>
+    <li><code>kuznix-cachy-v4</code></li>
+    <li><code>kuznix-cachy-znver4</code></li>
+  </ul>
+  <h2>Development</h2>
+  <p>Development counterparts use the same names with a <code>-dev</code> suffix.</p>
+  <h2>Enable a repository</h2>
+  <pre><code>[kuznix-arch]
+SigLevel = Optional
+Server = https://kuznix-code.github.io/repo/kuznix-arch/$arch</code></pre>
+  <p>For installation details and CPU requirements, see the <a href="https://github.com/kuznix-code/repo/blob/main/README.md">repository README</a>.</p>
+</body>
+</html>
