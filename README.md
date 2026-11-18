@@ -18,6 +18,27 @@ Base URL: <https://kuznix-code.github.io/repo/>
 
 The same five `-dev` repositories are used for development builds from the `main` branch. Main builds run daily at 00:00 UTC and can also be started manually. Stable repositories are updated only by stable `vX.Y.Z` release tags on the `stable` branch.
 
+## Automatic repository installer
+
+Enable the correct repository automatically on CachyOS, Arch Linux, and Arch-based distributions:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/kuznix-code/repo/main/install.sh | sudo bash
+```
+
+Use `--dev` for development packages:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/kuznix-code/repo/main/install.sh | sudo bash -s -- --dev
+```
+
+The installer selects:
+- CachyOS: `kuznix-cachy`
+- Other Arch-based systems configured for `x86-64-v3`, `x86-64-v4`, or `znver4`: the matching `kuznix-cachy-v3`, `kuznix-cachy-v4`, or `kuznix-cachy-znver4`
+- Other Arch-based systems: `kuznix-arch`
+
+It detects explicit `-march` settings in makepkg configuration first, then checks CPU capabilities/model. It only enables the repository and refreshes package databases; it does not install LH4051-DE. Review the script before running it if you prefer to inspect installation scripts first.
+
 ## Enable a repository
 
 Add the selected block to `/etc/pacman.conf` (replace the repository name to select another build):
