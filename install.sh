@@ -59,11 +59,11 @@ fi
 # rather than guessing from the CPU or makepkg compiler flags.
 if [[ "$DISTRO_ID" == "cachyos" ]]; then
     REPO="kuznix-cachy"
-    if grep -Eq '^[[:space:]]*\\[cachyos-v4\\][[:space:]]*$' "$CONFIG"; then
+    if grep -Eq '^[[:space:]]*\[cachyos-v4\][[:space:]]*$' "$CONFIG"; then
         REPO="kuznix-cachy-v4"
-    elif grep -Eq '^[[:space:]]*\\[cachyos-v3\\][[:space:]]*$' "$CONFIG"; then
+    elif grep -Eq '^[[:space:]]*\[cachyos-v3\][[:space:]]*$' "$CONFIG"; then
         REPO="kuznix-cachy-v3"
-    elif grep -Eq '^[[:space:]]*\\[cachyos-znver4\\][[:space:]]*$' "$CONFIG"; then
+    elif grep -Eq '^[[:space:]]*\[cachyos-znver4\][[:space:]]*$' "$CONFIG"; then
         REPO="kuznix-cachy-znver4"
     fi
 else
