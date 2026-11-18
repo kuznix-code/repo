@@ -11,12 +11,12 @@ Base URL: <https://kuznix-code.github.io/repo/>
 | \`kuznix-arch\` | \`archlinux:base-devel\` |
 | \`kuznix-cachy\` | \`cachyos/cachyos\` |
 | \`kuznix-cachy-v3\` | \`cachyos/cachyos-v3\`, \`-march=x86-64-v3\` |
-| \`kuznix-cachy-v4\` | \`cachyos/cachyos-v4\`, \`-march=x86-64-v4\` |
-| \`kuznix-cachy-znver4\` | \`cachyos/cachyos-v4\`, \`-march=znver4\` |
+| \`kuznix-cachy-v4\` | \`cachyos/cachyos\`, \`-march=x86-64-v4\` |
+| \`kuznix-cachy-znver4\` | \`cachyos/cachyos\`, \`-march=znver4\` |
 
 ## Development repositories
 
-The same five repositories are available with a \`-dev\` suffix. They are built from the \`main\` branch of [LH4051-DE](https://github.com/kuznix-code/LH4051-DE); stable repositories are built from its \`stable\` branch and stable release tags.
+The same five \`-dev\` repository directories are reserved for development builds. The automated package workflow now publishes stable release packages only; it does not update the \`-dev\` repositories.
 
 ## Enable a repository
 
@@ -61,7 +61,7 @@ Each repository contains the following split packages:
 - \`lh4051-de-sessions-{x11,wayland}-all\` and \`lh4051-de-sessions-all\`
 - \`lh4051-de-updater\` and \`lh4051-de-bootstrap\`
 
-The package workflow in [LH4051-DE](https://github.com/kuznix-code/LH4051-DE/actions) rebuilds the repositories when \`main\`, \`stable\`, or a stable \`vX.Y.Z\` tag changes.
+The package workflow in [LH4051-DE](https://github.com/kuznix-code/LH4051-DE/actions) builds and publishes only stable \`vX.Y.Z\` tags whose tagged commits are contained in the \`stable\` branch. Pushes to \`main\` or \`stable\`, pull requests, and prerelease tags do not start package builds.
 
 ## Publishing permission
 
