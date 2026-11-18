@@ -16,7 +16,7 @@ Base URL: <https://kuznix-code.github.io/repo/>
 
 ## Development repositories
 
-The same five `-dev` repository directories are reserved for development builds. The automated package workflow now publishes stable release packages only; it does not update the `-dev` repositories.
+The same five `-dev` repositories are used for development builds from the `main` branch. Main builds run daily at 00:00 UTC and can also be started manually. Stable repositories are updated only by stable `vX.Y.Z` release tags on the `stable` branch.
 
 ## Enable a repository
 
@@ -61,7 +61,7 @@ Each repository contains the following split packages:
 - `lh4051-de-sessions-{x11,wayland}-all` and `lh4051-de-sessions-all`
 - `lh4051-de-updater` and `lh4051-de-bootstrap`
 
-The package workflow in [LH4051-DE](https://github.com/kuznix-code/LH4051-DE/actions) builds and publishes only stable `vX.Y.Z` tags whose tagged commits are contained in the `stable` branch. Pushes to `main` or `stable`, pull requests, and prerelease tags do not start package builds.
+The package workflow in [LH4051-DE](https://github.com/kuznix-code/LH4051-DE/actions) runs development builds from `main` daily at 00:00 UTC or on manual dispatch, publishing to the `-dev` repositories. Stable builds run only for exact `vX.Y.Z` tags whose tagged commits are contained in `stable`.
 
 ## Publishing permission
 
