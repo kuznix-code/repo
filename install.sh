@@ -54,12 +54,11 @@ if [[ "$DISTRO_ID" != "cachyos" && "$DISTRO_ID" != "arch" && " $DISTRO_LIKE " !=
     exit 1
 fi
 
-# CachyOS gets its native build by default. Other Arch-based systems use an
-# optimized repository only when their configured makepkg target or CPU can
-# safely use it.
+# CachyOS uses its matching optimized repository when its makepkg
+# configuration selects a CachyOS CPU target. Plain CachyOS uses the generic
+# CachyOS build; all other Arch-based distributions use the Arch build.
 if [[ "$DISTRO_ID" == "cachyos" ]]; then
     REPO="kuznix-cachy"
-else
     MAKEPKG_TARGET=""
     if [[ -r /etc/makepkg.conf ]]; then
         MAKEPKG_TARGET="$(grep -Eo -- '-march=(x86-64-v[34]|znver4)' /etc/makepkg.conf | head -n1 | cut -d= -f2 || true)"
@@ -68,25 +67,13 @@ else
         MAKEPKG_TARGET="$(grep -hEo -- '-march=(x86-64-v[34]|znver4)' /etc/makepkg.conf.d/*.conf 2>/dev/null | head -n1 | cut -d= -f2 || true)"
     fi
 
-    MODEL="$(grep -m1 -E '^model name[[:space:]]*:' /proc/cpuinfo 2>/dev/null | cut -d: -f2- | sed 's/^[[:space:]]*//' || true)"
-    FLAGS="$(grep -m1 -E '^(flags|Features)[[:space:]]*:' /proc/cpuinfo 2>/dev/null || true)"
-
-    if [[ -z "$MAKEPKG_TARGET" ]]; then
-        if [[ "$MODEL" =~ (AMD[[:space:]]+EPYC[[:space:]]+9[0-9]{3}|AMD[[:space:]]+Ryzen[[:space:]]+[3579][[:space:]]+(7[0-9]{3}|704[05]|804[05])|AMD[[:space:]]+Ryzen[[:space:]]+Threadripper[[:space:]]+7[0-9]{3}) ]]; then
-            MAKEPKG_TARGET="znver4"
-        elif [[ "$FLAGS" == *avx512f* && "$FLAGS" == *avx512bw* && "$FLAGS" == *avx512cd* && "$FLAGS" == *avx512dq* && "$FLAGS" == *avx512vl* ]]; then
-            MAKEPKG_TARGET="x86-64-v4"
-        elif [[ "$FLAGS" == *avx2* && "$FLAGS" == *bmi1* && "$FLAGS" == *bmi2* && "$FLAGS" == *fma* && "$FLAGS" == *lzcnt* && "$FLAGS" == *movbe* && "$FLAGS" == *xsave* ]]; then
-            MAKEPKG_TARGET="x86-64-v3"
-        fi
-    fi
-
     case "$MAKEPKG_TARGET" in
         x86-64-v3) REPO="kuznix-cachy-v3" ;;
         x86-64-v4) REPO="kuznix-cachy-v4" ;;
         znver4) REPO="kuznix-cachy-znver4" ;;
-        *) REPO="kuznix-arch" ;;
     esac
+else
+    REPO="kuznix-arch"
 fi
 
 if (( DEV )); then
