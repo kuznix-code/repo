@@ -25,7 +25,7 @@ Add the selected block to `/etc/pacman.conf` (replace the repository name to sel
 ```ini
 [kuznix-arch]
 SigLevel = Optional
-Server = https://kuznix-code.github.io/repo/kuznix-arch/$arch
+Server = https://kuznix-code.github.io/repo/$repo/$arch
 ```
 
 For development builds, use the matching `-dev` name and URL, for example:
@@ -33,7 +33,7 @@ For development builds, use the matching `-dev` name and URL, for example:
 ```ini
 [kuznix-arch-dev]
 SigLevel = Optional
-Server = https://kuznix-code.github.io/repo/kuznix-arch-dev/$arch
+Server = https://kuznix-code.github.io/repo/$repo/$arch
 ```
 
 Then refresh package databases and install LH4051-DE:
