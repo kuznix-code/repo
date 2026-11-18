@@ -54,24 +54,18 @@ if [[ "$DISTRO_ID" != "cachyos" && "$DISTRO_ID" != "arch" && " $DISTRO_LIKE " !=
     exit 1
 fi
 
-# CachyOS uses its matching optimized repository when its makepkg
-# configuration selects a CachyOS CPU target. Plain CachyOS uses the generic
-# CachyOS build; all other Arch-based distributions use the Arch build.
+# Detect the active CachyOS repository variant from pacman.conf.
+# This follows the variant the system actually uses (for example cachyos-v3),
+# rather than guessing from the CPU or makepkg compiler flags.
 if [[ "$DISTRO_ID" == "cachyos" ]]; then
     REPO="kuznix-cachy"
-    MAKEPKG_TARGET=""
-    if [[ -r /etc/makepkg.conf ]]; then
-        MAKEPKG_TARGET="$(grep -Eo -- '-march=(x86-64-v[34]|znver4)' /etc/makepkg.conf | head -n1 | cut -d= -f2 || true)"
+    if grep -Eq '^[[:space:]]*\\[cachyos-v4\\][[:space:]]*$' "$CONFIG"; then
+        REPO="kuznix-cachy-v4"
+    elif grep -Eq '^[[:space:]]*\\[cachyos-v3\\][[:space:]]*$' "$CONFIG"; then
+        REPO="kuznix-cachy-v3"
+    elif grep -Eq '^[[:space:]]*\\[cachyos-znver4\\][[:space:]]*$' "$CONFIG"; then
+        REPO="kuznix-cachy-znver4"
     fi
-    if [[ -z "$MAKEPKG_TARGET" ]] && compgen -G '/etc/makepkg.conf.d/*.conf' >/dev/null; then
-        MAKEPKG_TARGET="$(grep -hEo -- '-march=(x86-64-v[34]|znver4)' /etc/makepkg.conf.d/*.conf 2>/dev/null | head -n1 | cut -d= -f2 || true)"
-    fi
-
-    case "$MAKEPKG_TARGET" in
-        x86-64-v3) REPO="kuznix-cachy-v3" ;;
-        x86-64-v4) REPO="kuznix-cachy-v4" ;;
-        znver4) REPO="kuznix-cachy-znver4" ;;
-    esac
 else
     REPO="kuznix-arch"
 fi
@@ -94,7 +88,7 @@ cat >> "$TMP" <<EOF
 # BEGIN KUZNIX REPOSITORY
 [$REPO]
 SigLevel = Optional
-Server = $BASE_URL/\$repo/\$arch
+Server = $BASE_URL/$REPO/x86_64
 # END KUZNIX REPOSITORY
 EOF
 install -m 0644 "$TMP" "$CONFIG"
